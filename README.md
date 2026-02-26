@@ -1,34 +1,72 @@
-### 画面遷移図
-Figma：<https://www.figma.com/board/630wbMay4aes8cgDVGCWl9/%E3%82%B0%E3%83%9F%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AE%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3?node-id=0-1&t=V3xz6OyIOR2zjs4k-1>
+### ER図
+[![Image from Gyazo](https://i.gyazo.com/23ebaedb42759fea730482a012aa84c3.jpg)](https://gyazo.com/23ebaedb42759fea730482a012aa84c3)
 
 ### 本サービスの概要（700文字以内）
-このグミレビューアプリを作る目的はInstagramとかXではなかなか見かけない良いことだけじゃなくて本音のグミのレビューが見てみたい、自分の知らないグミを見つけたいと思ったからです。  
-グミを買って自分の好みのグミじゃなかったなども耳にすることがあるのでレビューがあれば、自分の好みのグミが探せて、失敗することが減るのではないかと考えました。  
-この検索を機に「こんなグミが販売されているんだな、気になるから今度買ってみよう」と新たな出会いのお手伝いができたら嬉しいです。  
-想定ユーザーはグミが好きな人です。メインはグミ好きの人ですが、統計ではよく多く食べている年代が20代〜30代の女性が多いらしいので可愛らしいアプリデザイン、誰がどう見ても分かりやすいボタン配置にしたいと思っています。  
-このアプリの主な機能は、グミのレビュー、自分の好みのグミが検索できる機能がメイン機能となっています。本リリースの際は自分が投稿したグミを元に自分の好みのグミを分析できる機能をつけたいと思っています。
+　このアプリは、グミをレビューするアプリです。概要は、グミを投稿してレビューをする、グミを検索する、自分の好きなグミタイプを検索の条件に入れ、新しいグミとの出会いをお手伝いするアプリになっています。想定ユーザーはグミが好きな人たちです。年代も幅広いと思うのでみんなが使いやすいボタン配置、設定にしていきたいです。
+### MVPで実装する予定の機能
+- グミの登録（画像、グミの詳細付き）
+- ログイン機能（sorceryを使用予定）
+- コメント機能
+- いいね機能
+- プロフィール編集機能
+- 検索機能
 
+### テーブル詳細
+#### usersテーブル
+- name : string / ユーザーの表示名
+- email : string / ログイン用メールアドレス（ユニーク制約）
+- profile_image : string / プロフィール画像
+- password_digest : string / パスワード
 
-### READMEに記載した機能
-- [x] ユーザー登録機能
-- [x] ログイン機能
-- [x] パスワード変更機能
-- [x] メールアドレス変更機能
-- [x] 記事投稿機能（画像投稿含む）
-- [x] 記事閲覧機能（未ログインでも閲覧可能）
-- [x] 記事編集機能
-- [x] 記事削除機能
-- [x] コメント投稿機能
-- [x] コメント編集機能
-- [x] コメント削除機能
-- [x] タグ投稿機能
-- [x] タグ編集機能
-- [x] いいね機能
-- [x] いいね解除機能
+#### gummiesテーブル
+- created_at : datetime / データ作成日時
+- updated_at : datetime /　データ更新日時
+- photo_url : string /　グミの写真
+- name : string /　グミの名前
+- maker_id : integer /　グミのメーカーへの外部キー
 
-### 未ログインでも閲覧または利用できるページ
-- [x] コメント閲覧機能（未ログインでも閲覧可能）
+#### makersテーブル
+- name : string / メーカーの名前
 
-### メールアドレス・パスワード変更確認項目
-- [x] メールアドレス
-- [x] パスワード
+#### reviewsテーブル
+- created_at : datetime / データ作成日時
+- updated_at : datetime /　データ更新日時
+- user_id : integer / ユーザーへの外部キー
+- gummy_id : integer /　グミへの外部キー
+- rating : integer /　星の評価
+- comment : text /　コメント
+- purchase_location : string /　販売店
+- photo_url : string /　グミの写真
+- sweetness : integer /　甘さ
+- sourness : integer /　酸っぱさ
+- hardness : integer /　固さ
+
+#### flavorsテーブル
+- name : string /フレーバーの名前
+
+#### likesテーブル
+- created_at : datetime / データ作成日時
+- updated_at : datetime /　データ更新日時
+- review_id : integer / レビューへの外部キー
+- user_id : integer / ユーザーへの外部キー(user_id と review_id の組み合わせでユニーク制約)
+
+#### commentsテーブル
+- created_at : datetime / データ作成日時
+- updated_at : datetime /　データ更新日時
+- review_id : integer / レビューへの外部キー
+- user_id : integer / ユーザーへの外部キー(user_id と review_id の組み合わせでユニーク制約)
+- body : text / コメント文
+
+#### flavor_gummiesテーブル
+- flavor_id : integer /　フレーバーへの外部キー
+- gummy_id : integer /　グミへの外部キー
+
+### ER図の注意点
+- [x] 最新のER図スクリーンショットがPRに掲載されているか
+- [x] テーブル名は複数形になっているか
+- [x] カラムの型は記載されているか
+- [x] 外部キーは適切か
+- [x] リレーションは正しく描かれているか
+- [x] 多対多の関係になっていないか
+- [x] STIを使用していないか
+- [x] postsテーブルに post_name のような命名をしていないか
